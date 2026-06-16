@@ -1,0 +1,86 @@
+[
+  {
+    "id": "E01",
+    "name": "TF-IDF global retrieval",
+    "category": "baseline",
+    "change": "Char n-gram TF-IDF, single global index",
+    "rationale": "Lower bound before per-subset indexing",
+    "rouge1_f1": 0.4274646820320691,
+    "rougeL_f1": 0.37381845859125806,
+    "notes": "",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T15:32:34.517357Z"
+  },
+  {
+    "id": "E02",
+    "name": "TF-IDF per-subset retrieval",
+    "category": "baseline",
+    "change": "Char n-gram TF-IDF with per-subset indexes",
+    "rationale": "EDA: subset codes capture country-specific health vocabulary; per-group retrieval avoids cross-language neighbours",
+    "rouge1_f1": 0.419984786862322,
+    "rougeL_f1": 0.3647289975095291,
+    "notes": "",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T15:35:13.295321Z"
+  },
+  {
+    "id": "E07",
+    "name": "Zero-shot google/mt5-small (E07)",
+    "category": "baseline",
+    "change": "Model=google/mt5-small, language_prompt=True, beams=4",
+    "rationale": "EDA: multilingual imbalance -> language-conditioned prompts; long answers -> beam search",
+    "rouge1_f1": 0.015283559191347823,
+    "rougeL_f1": 0.014361984899001711,
+    "notes": "",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T15:38:45.502281Z"
+  },
+  {
+    "id": "E08",
+    "name": "Hybrid retrieval (final)",
+    "category": "retrieval",
+    "change": "k=50, CE=0.5, aq=0.45, abm=0.3",
+    "rationale": "Duplicate match, sparse retrieval, cross-encoder and answer-level reranking",
+    "rouge1_f1": 0.3992596442732917,
+    "rougeL_f1": 0.34062398987167813,
+    "notes": "match_stats={'retrieval': 6540, 'retrieval_short': 78, 'exact': 68}",
+    "runtime_min": 26.4,
+    "timestamp": "2026-06-16T16:07:06.338275Z"
+  },
+  {
+    "id": "E11",
+    "name": "Top-k ablation",
+    "category": "analysis",
+    "change": "Compared k in [5, 10, 15, 20]; production k=50",
+    "rationale": "Wider neighbour pool vs noise trade-off",
+    "rouge1_f1": 0.39536634072648874,
+    "rougeL_f1": 0.3366504537461581,
+    "notes": "[{\"top_k\":5,\"rouge1_f1\":0.3954,\"rougeL_f1\":0.3367},{\"top_k\":10,\"rouge1_f1\":0.3812,\"rougeL_f1\":0.3224},{\"top_k\":15,\"rouge1_f1\":0.3868,\"rougeL_f1\":0.3289},{\"top_k\":20,\"rouge1_f1\":0.3809,\"rougeL_f1\":0.3238}]",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T16:11:27.675229Z"
+  },
+  {
+    "id": "E09",
+    "name": "Advanced retrieval (train-only index)",
+    "category": "retrieval",
+    "change": "Index Train.csv only",
+    "rationale": "Honest val eval without val-in-index leakage",
+    "rouge1_f1": 0.3766639192506831,
+    "rougeL_f1": 0.3178203543367966,
+    "notes": "",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T16:33:01.323511Z"
+  },
+  {
+    "id": "E14",
+    "name": "RDA oracle ceiling (train-only)",
+    "category": "diagnostic",
+    "change": "Oracle-K on cleaned train, k=50",
+    "rationale": "Quantify retrieval headroom after Q+A dedup; diagnose subset failures",
+    "rouge1_f1": 0.3992596442732917,
+    "rougeL_f1": null,
+    "notes": "oracle_1_mean=0.4063, oracle_k_mean=0.6768",
+    "runtime_min": null,
+    "timestamp": "2026-06-16T16:40:40.899575Z"
+  }
+]
