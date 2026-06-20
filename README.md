@@ -84,6 +84,24 @@ flowchart LR
 5. **Reproducible experimentation** — fixed random seed, structured logging, and documented evaluation protocols.
 6. **Transparent evaluation** — honest and proxy metrics are reported separately to avoid conflating generalisation with submission strategy.
 
+### Semantic routing architecture (E16)
+
+<p align="center">
+  <img src="images/semantic-architecture.png" alt="Semantic routing pipeline — encode training questions with mpnet, build 8 per-subset indexes, route test questions by subset, cosine similarity with optional TF-IDF blend for weak subsets, return top-1 verbatim answer" width="900"/>
+</p>
+
+**Offline (index build):**
+
+1. Encode every training question with `paraphrase-multilingual-mpnet-base-v2`
+2. Build **8 per-subset indexes** (one per language–country code)
+
+**Online (inference):**
+
+1. Encode the test/validation question with the same model
+2. Route to the relevant subset index → **cosine similarity** ranking
+3. **Weak subsets:** blend in TF-IDF (sparse + dense hybrid)
+4. Return the **top-1** matched training answer verbatim
+
 ### Core model
 
 | Component | Choice |
@@ -146,7 +164,8 @@ Full details, rationales, and timestamps are in [`experiment_log.json`](experime
 │   └── eval_tfidf_by_subset.png
 └── images/
     ├── zindi-competetion.png                 # Challenge banner
-    └── zindi-ranking.png                     # Leaderboard screenshot
+    ├── zindi-ranking.png                     # Leaderboard screenshot
+    └── semantic-architecture.png             # E16 semantic routing pipeline diagram
 ```
 
 ---
