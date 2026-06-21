@@ -175,7 +175,7 @@ Full details, rationales, and timestamps are in [`experiment_log.json`](experime
 ### 1. Clone and install
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Bonaparte003/African-Language-Health-QA-Challenge
 cd Summative-Zindi-Challenge
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
